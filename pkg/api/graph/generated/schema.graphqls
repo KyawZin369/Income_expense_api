@@ -1,0 +1,312 @@
+scalar Time
+
+type User {
+	id: ID!
+	email: String!
+	name: String!
+	createdAt: Time!
+	updatedAt: Time!
+	accounts: [Account!]!
+	categories: [Category!]!
+	transactions: [Transaction!]!
+	expenses: [Expense!]!
+	incomes: [Income!]!
+	exchanges: [Exchange!]!
+	transfers: [Transfer!]!
+}
+
+type Currency {
+	id: ID!
+	code: String!
+	name: String!
+	symbol: String!
+	isActive: Boolean!
+	createdAt: Time!
+	updatedAt: Time!
+}
+
+type Account {
+	id: ID!
+	userId: ID!
+	user: User!
+	name: String!
+	type: String!
+	currencyId: ID!
+	currency: Currency!
+	balance: Float!
+	isActive: Boolean!
+	createdAt: Time!
+	updatedAt: Time!
+}
+
+type Category {
+	id: ID!
+	userId: ID!
+	user: User!
+	name: String!
+	type: String!
+	color: String
+	icon: String
+	isActive: Boolean!
+	createdAt: Time!
+	updatedAt: Time!
+}
+
+type Transaction {
+	id: ID!
+	userId: ID!
+	user: User!
+	accountId: ID!
+	account: Account!
+	categoryId: ID
+	category: Category
+	amount: Float!
+	currencyId: ID!
+	currency: Currency!
+	description: String
+	date: Time!
+	type: String!
+	status: String!
+	createdAt: Time!
+	updatedAt: Time!
+}
+
+type Expense {
+	id: ID!
+	userId: ID!
+	user: User!
+	accountId: ID!
+	account: Account!
+	categoryId: ID
+	category: Category
+	amount: Float!
+	currencyId: ID!
+	currency: Currency!
+	description: String
+	date: Time!
+	status: String!
+	tags: String
+	location: String
+	receiptUrl: String
+	createdAt: Time!
+	updatedAt: Time!
+}
+
+type Income {
+	id: ID!
+	userId: ID!
+	user: User!
+	accountId: ID!
+	account: Account!
+	categoryId: ID
+	category: Category
+	amount: Float!
+	currencyId: ID!
+	currency: Currency!
+	description: String
+	date: Time!
+	status: String!
+	source: String
+	isRecurring: Boolean!
+	frequency: String
+	createdAt: Time!
+	updatedAt: Time!
+}
+
+type Exchange {
+	id: ID!
+	userId: ID!
+	user: User!
+	fromAccountId: ID!
+	fromAccount: Account!
+	toAccountId: ID!
+	toAccount: Account!
+	fromAmount: Float!
+	toAmount: Float!
+	fromCurrencyId: ID!
+	fromCurrency: Currency!
+	toCurrencyId: ID!
+	toCurrency: Currency!
+	exchangeRate: Float!
+	description: String
+	date: Time!
+	status: String!
+	fee: Float!
+	feeCurrencyId: ID
+	feeCurrency: Currency
+	createdAt: Time!
+	updatedAt: Time!
+}
+
+type Transfer {
+	id: ID!
+	userId: ID!
+	user: User!
+	fromAccountId: ID!
+	fromAccount: Account!
+	toAccountId: ID!
+	toAccount: Account!
+	amount: Float!
+	currencyId: ID!
+	currency: Currency!
+	description: String
+	date: Time!
+	status: String!
+	fee: Float!
+	createdAt: Time!
+	updatedAt: Time!
+}
+
+# Input types
+input NewUserInput {
+	email: String!
+	name: String!
+}
+
+input NewCurrencyInput {
+	code: String!
+	name: String!
+	symbol: String!
+}
+
+input NewAccountInput {
+	userId: ID!
+	name: String!
+	type: String!
+	currencyId: ID!
+	balance: Float
+}
+
+input NewCategoryInput {
+	userId: ID!
+	name: String!
+	type: String!
+	color: String
+	icon: String
+}
+
+input NewExpenseInput {
+	userId: ID!
+	accountId: ID!
+	categoryId: ID
+	amount: Float!
+	currencyId: ID!
+	description: String
+	date: Time!
+	tags: String
+	location: String
+	receiptUrl: String
+}
+
+input NewIncomeInput {
+	userId: ID!
+	accountId: ID!
+	categoryId: ID
+	amount: Float!
+	currencyId: ID!
+	description: String
+	date: Time!
+	source: String
+	isRecurring: Boolean
+	frequency: String
+}
+
+input NewExchangeInput {
+	userId: ID!
+	fromAccountId: ID!
+	toAccountId: ID!
+	fromAmount: Float!
+	toAmount: Float!
+	fromCurrencyId: ID!
+	toCurrencyId: ID!
+	exchangeRate: Float!
+	description: String
+	date: Time!
+	fee: Float
+	feeCurrencyId: ID
+}
+
+input NewTransferInput {
+	userId: ID!
+	fromAccountId: ID!
+	toAccountId: ID!
+	amount: Float!
+	currencyId: ID!
+	description: String
+	date: Time!
+	fee: Float
+}
+
+# Queries
+type Query {
+	# Users
+	users: [User!]!
+	user(id: ID!): User
+	
+	# Currencies
+	currencies: [Currency!]!
+	currency(id: ID!): Currency
+	
+	# Accounts
+	accounts: [Account!]!
+	account(id: ID!): Account
+	userAccounts(userId: ID!): [Account!]!
+	
+	# Categories
+	categories: [Category!]!
+	category(id: ID!): Category
+	userCategories(userId: ID!): [Category!]!
+	
+	# Transactions
+	transactions: [Transaction!]!
+	transaction(id: ID!): Transaction
+	userTransactions(userId: ID!): [Transaction!]!
+	
+	# Expenses
+	expenses: [Expense!]!
+	expense(id: ID!): Expense
+	userExpenses(userId: ID!): [Expense!]!
+	
+	# Incomes
+	incomes: [Income!]!
+	income(id: ID!): Income
+	userIncomes(userId: ID!): [Income!]!
+	
+	# Exchanges
+	exchanges: [Exchange!]!
+	exchange(id: ID!): Exchange
+	userExchanges(userId: ID!): [Exchange!]!
+	
+	# Transfers
+	transfers: [Transfer!]!
+	transfer(id: ID!): Transfer
+	userTransfers(userId: ID!): [Transfer!]!
+}
+
+# Mutations
+type Mutation {
+	# Users
+	createUser(input: NewUserInput!): User!
+	
+	# Currencies
+	createCurrency(input: NewCurrencyInput!): Currency!
+	
+	# Accounts
+	createAccount(input: NewAccountInput!): Account!
+	
+	# Categories
+	createCategory(input: NewCategoryInput!): Category!
+	
+	# Expenses
+	createExpense(input: NewExpenseInput!): Expense!
+	
+	# Incomes
+	createIncome(input: NewIncomeInput!): Income!
+	
+	# Exchanges
+	createExchange(input: NewExchangeInput!): Exchange!
+	
+	# Transfers
+	createTransfer(input: NewTransferInput!): Transfer!
+}
+

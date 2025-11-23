@@ -1,0 +1,44 @@
+schema:
+  - pkg/api/graph/schema/schema.graphqls
+exec:
+  filename: pkg/api/graph/generated/generated.go
+  package: generated
+model:
+  filename: pkg/api/graph/generated/models_gen.go
+  package: generated
+resolver:
+  layout: follow-schema
+  dir: pkg/api/graph/resolver
+  package: graph
+models:
+  Time:
+    model:
+      - github.com/99designs/gqlgen/graphql.Time
+  User:
+    model:
+      - github.com/example/graphql-mysql-api/pkg/models.User
+  Currency:
+    model:
+      - github.com/example/graphql-mysql-api/pkg/models.Currency
+  Account:
+    model:
+      - github.com/example/graphql-mysql-api/pkg/models.Account
+  Category:
+    model:
+      - github.com/example/graphql-mysql-api/pkg/models.Category
+  Transaction:
+    model:
+      - github.com/example/graphql-mysql-api/pkg/models.Transaction
+  Expense:
+    model:
+      - github.com/example/graphql-mysql-api/pkg/models.Expense
+  Income:
+    model:
+      - github.com/example/graphql-mysql-api/pkg/models.Income
+  Exchange:
+    model:
+      - github.com/example/graphql-mysql-api/pkg/models.Exchange
+  Transfer:
+    model:
+      - github.com/example/graphql-mysql-api/pkg/models.Transfer
+
