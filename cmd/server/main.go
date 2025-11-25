@@ -1,9 +1,11 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
 
+	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/gin-gonic/gin"
@@ -12,6 +14,8 @@ import (
 	"github.com/example/graphql-mysql-api/pkg/api/graph"
 	"github.com/example/graphql-mysql-api/pkg/config"
 	"github.com/example/graphql-mysql-api/pkg/database"
+	"github.com/example/graphql-mysql-api/pkg/middleware"
+	"github.com/example/graphql-mysql-api/pkg/utils"
 )
 
 func main() {
@@ -28,9 +32,17 @@ func main() {
 		log.Fatalf("auto-migrate failed: %v", err)
 	}
 
+	// Initialize JWT
+	utils.InitJWT(cfg.JWTSecret)
+
 	r := gin.Default()
 
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: graph.NewResolver(db)}))
+	
+	// Add authentication middleware
+	srv.AroundFields(func(ctx context.Context, next graphql.Resolver) (res interface{}, err error) {
+		return middleware.AuthMiddleware(ctx, nil, next)
+	})
 
 	r.POST("/query", func(c *gin.Context) {
 		srv.ServeHTTP(c.Writer, c.Request)

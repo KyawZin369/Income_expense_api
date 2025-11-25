@@ -8,7 +8,7 @@ model:
   package: generated
 resolver:
   layout: follow-schema
-  dir: pkg/api/graph/resolver
+  dir: pkg/api/graph
   package: graph
 models:
   Time:

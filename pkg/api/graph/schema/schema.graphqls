@@ -161,6 +161,17 @@ type Transfer {
 input NewUserInput {
 	email: String!
 	name: String!
+	password: String!
+}
+
+input LoginInput {
+	email: String!
+	password: String!
+}
+
+type AuthPayload {
+	token: String!
+	user: User!
 }
 
 input NewCurrencyInput {
@@ -239,6 +250,9 @@ input NewTransferInput {
 
 # Queries
 type Query {
+	# Auth
+	me: User
+	
 	# Users
 	users: [User!]!
 	user(id: ID!): User
@@ -285,6 +299,11 @@ type Query {
 
 # Mutations
 type Mutation {
+	# Auth
+	register(input: NewUserInput!): AuthPayload!
+	login(input: LoginInput!): AuthPayload!
+	logout: Boolean!
+	
 	# Users
 	createUser(input: NewUserInput!): User!
 	

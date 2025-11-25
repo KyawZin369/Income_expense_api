@@ -4,7 +4,19 @@ package generated
 
 import (
 	"time"
+
+	"github.com/example/graphql-mysql-api/pkg/models"
 )
+
+type AuthPayload struct {
+	Token string       `json:"token"`
+	User  *models.User `json:"user"`
+}
+
+type LoginInput struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
 
 type Mutation struct {
 }
@@ -84,8 +96,9 @@ type NewTransferInput struct {
 }
 
 type NewUserInput struct {
-	Email string `json:"email"`
-	Name  string `json:"name"`
+	Email    string `json:"email"`
+	Name     string `json:"name"`
+	Password string `json:"password"`
 }
 
 type Query struct {
